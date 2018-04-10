@@ -29,5 +29,7 @@ public class Treasure {
 	public String getDescription() {
 		return description;
 	}
+	
+	
 
 }

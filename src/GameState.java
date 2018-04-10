@@ -16,15 +16,12 @@ public class GameState {
 		map = new Grid();
 		map.populateMap();
 		setUpTreasures();
-		givePlayerItem(0);
-		
-		
-		
+		player.pickUp(new Treasure(1,1,"compass", "This will show you the way!"));
 	}
 	 
+	
 	public void startGame() {
 		Scanner sc = new Scanner(System.in);
-		
 		startMessage();
 		String input = sc.nextLine();
 		System.out.println(readCommand(input));
@@ -37,11 +34,10 @@ public class GameState {
 			System.out.println(response);
 			if(haveWon) break;
 		}
-		
 		sc.close();
 	}
 	
-	public String readCommand(String input) {
+	public String readCommand(String input) { 
 		switch(input.toLowerCase()) { 
 			case("look"):
 				return map.getMapDescription(player.getPlayerXCoord(), player.getPlayerYCoord()) +'\n' + itemAtLocation();
@@ -72,17 +68,21 @@ public class GameState {
 			case("compass"):
 				return compass();
 			case("use letter"):
-				haveWon = true;
-				return "The letter reads 'You Win! You must be very smart!'";
+				if(items.get(0).getXCoord() == player.getPlayerXCoord() && items.get(0).getYCoord() == player.getPlayerYCoord()) {
+					haveWon = true;
+					return "The letter reads 'You Win! You must be very smart!'";
+				}
+				return "command not recognised";
 			case("inventory"):
-				return player.checkInventory();  
+				return player.printInventory();  
+			case("help"):
+				return helpCommand();
 			default:
 				return "command not recognised";
-				
-		}
-		
-		
+				     
+		}  
 	} 
+	
 	
 	/**
 	 * sets up the game with the required treasures
@@ -90,7 +90,7 @@ public class GameState {
 	private void setUpTreasures() {	
 		//items[0] = new Treasure(0,0,"flashlight", "useful in the dark");
 		//items[1] = new Treasure(5,5,"key", "when something is locked");
-		items.add(new Treasure(1,1,"compass", "This will show you the way!"));
+		//items.add(new Treasure(1,1,"compass", "This will show you the way!"));
 		items.add(new Treasure(6,8,"letter", "This might say something interesting. Try 'use letter'"));
 
 	}
@@ -144,19 +144,15 @@ public class GameState {
 	 */
 	public void startMessage() {
 		String msg = "Simple text adventure called \"The adventure of the barren moor\"\r\n" + 
-				"\r\n" + 
-				"In \"The adventure of the barren moor\" the player is in the middle of an infinite grey swamp. This grey swamp has few distinguishing characteristics, other than the fact that it is large and infinite and dreary. However, the player DOES have a magic compass that tells the player how far away the next feature of interest is.\r\n" + 
-				"\r\n" + 
-				"The player can go north,south,east,or west.\r\n" + 
-				"\r\n" + 
-				"Here is an example playthrough you might create\r\n" + 
-				"\r\n" + 
 				"You awaken to find yourself in a barren moor.  Try \"look\"";
 		System.out.println(msg);
 	}
 	
+	public String helpCommand() {
+		return "try commands: 'Look', 'North', 'West', 'South', 'East', 'inventory'";
+	}
 	
-	public void givePlayerItem(int index) {
+	public void givePlayerItem(int index) { 
 		player.pickUp(items.get(index));
 		items.remove(index);
 		
@@ -168,6 +164,22 @@ public class GameState {
 				items.remove(i);
 			}
 		}
+	}
+	
+	
+	
+private String containsUse(String input) {
+		String itemname = "";
+		if(input.substring(0, 3).equals("use")) {
+			itemname = input.substring(4 , input.length());
+			for(Treasure t : items) {
+				if(t.getName().equals(itemname) && t.getXCoord() == player.getPlayerXCoord() && t.getYCoord() == player.getPlayerYCoord()) {
+					//use item
+				} 
+			}
+		}
+		return "";
+	
 	}
 	
 	

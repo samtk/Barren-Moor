@@ -43,27 +43,35 @@ public class GameState {
 				return map.getMapDescription(player.getPlayerXCoord(), player.getPlayerYCoord()) +'\n' + itemAtLocation();
 			case("north"):
 				if(player.getPlayerYCoord()-1 < 0) {
+					map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 					return "Can't go north";
 				}
 				player.movePlayer(player.getPlayerXCoord(),player.getPlayerYCoord()-1);
+				map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 				return compass() +'\n' + itemAtLocation();
 			case("east"):
 				if(player.getPlayerXCoord()+1 > 9) { 
+					map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 					return "Can't go east";
 				}
 				player.movePlayer(player.getPlayerXCoord()+1,player.getPlayerYCoord());
+				map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 				return compass()+ '\n' +itemAtLocation();
 			case("south"):
 				if(player.getPlayerYCoord()+1 > 9) {
+					map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 					return "Can't go south";
 				}
 				player.movePlayer(player.getPlayerXCoord(),player.getPlayerYCoord()+1);
+				map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 				return compass()+ '\n' +itemAtLocation();
 			case("west"):
 				if(player.getPlayerXCoord()-1 < 0) {
+					map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 					return "Can't go west";
 				}
 				player.movePlayer(player.getPlayerXCoord()-1,player.getPlayerYCoord());
+				map.printGrid(player.getPlayerXCoord(), player.getPlayerYCoord());
 				return compass()+ '\n' + itemAtLocation();
 			case("compass"):
 				return compass();
@@ -101,12 +109,15 @@ public class GameState {
 	 * @returns a String describing how far away player is from feature 
 	 */
 	private String compass() {
-		int distance = 0;
+		double distance = 0;
 		int itemx = items.get(0).getXCoord();
 		int itemy = items.get(0).getYCoord();
 		int playerx = player.getPlayerXCoord();
 		int playery = player.getPlayerYCoord();
+			
+		distance = Math.hypot((itemx-playerx), (itemy - playery));
 		
+		/**
 		if(itemx >= playerx) {
 			distance += itemx - playerx;
 		}
@@ -120,7 +131,7 @@ public class GameState {
 		else {
 			distance += playery - itemy;
 		}
-		
+		*/
 		return "The dial reads " + distance + "m";
 	}
 	
@@ -167,20 +178,7 @@ public class GameState {
 	}
 	
 	
-	
-private String containsUse(String input) {
-		String itemname = "";
-		if(input.substring(0, 3).equals("use")) {
-			itemname = input.substring(4 , input.length());
-			for(Treasure t : items) {
-				if(t.getName().equals(itemname) && t.getXCoord() == player.getPlayerXCoord() && t.getYCoord() == player.getPlayerYCoord()) {
-					//use item
-				} 
-			}
-		}
-		return "";
-	
-	}
+
 	
 	
 	

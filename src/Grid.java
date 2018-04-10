@@ -38,6 +38,21 @@ public class Grid {
 	}
 	
 	
+	public void printGrid(int x, int y) {
+		for(int i = 0; i < 10; i++) {
+			for(int j = 0; j < 10; j++) {
+				if(x == j && y == i) {
+					System.out.print('P');
+				}
+				else {
+					System.out.print('0');
+				}
+			}
+			System.out.println();
+		}
+		
+	}
+	
 	
 	
 

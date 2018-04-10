@@ -9,6 +9,8 @@ public class Player {
 	public Player(int xcoord, int ycoord) {
 		this.xcoord = xcoord;
 		this.ycoord = ycoord;
+		
+		inventory = new ArrayList<Treasure>();
 				
 		
 	}
@@ -21,12 +23,17 @@ public class Player {
 		return ycoord;
 	}
 	
-	public String look() {
-		return "";
+	
+	public void pickUp(Treasure item) {
+		inventory.add(item);
 	}
 	
-	public void pickUp() {
-		
+	public String checkInventory() {
+		String msg= "Your inventory contains: ";
+		for(int i = 0; i < inventory.size(); i++ ) {
+			msg += inventory.get(i).getName() + ", ";
+		}
+		return msg.substring(0, msg.length()-2);
 	}
 	
 	public void use(String item) {
@@ -39,9 +46,5 @@ public class Player {
 		
 	}
 	
-	
-	public String checkInventory() {
-		return "";
-	}
 
 }
